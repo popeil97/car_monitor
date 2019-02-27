@@ -3,19 +3,6 @@ var mongoose = require('mongoose');
 var busboy = require('busboy');
 var User = require('../models/User.js');
 var fs = require('fs');
-var multer = require('multer');
-
-
-var storage =  multer.diskStorage({
-    destination: './public/images/',
-
-    filename: function (req, file, callback) {
-        console.log(file);
-        callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-    }
-  });
-
-var upload = multer({ storage : storage }).array('files',12);
 
 module.exports = function(router) {
 
