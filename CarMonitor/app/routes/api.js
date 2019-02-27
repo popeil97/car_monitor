@@ -1,6 +1,8 @@
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose');
+var busboy = require('busboy');
 var User = require('../models/User.js');
+var fs = require('fs');
 
 module.exports = function(router) {
 
@@ -78,6 +80,20 @@ module.exports = function(router) {
             });
 
         }
+    });
+    
+    router.post('/uploadImage', function(req,res) {
+
+        fs.writeFile("./public/images/" + Date.now() +  ".jpg", Buffer(req.files.car.data,'base64'), function(err) {
+            if(err) {
+                console.log(err);
+            }
+
+            else {
+                res.send("Thanks");
+            }
+        });
+
     });
 
     return router;

@@ -1,29 +1,33 @@
 {
-    "name": "carmonitor",
-    "version": "1.0.0",
-    "description": "car monitoring backend service",
-    "main": "server.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "node server.js"
-    },
-    "keywords": [
-      "MEAN",
-      "stack"
-    ],
-    "repository": "/Users/fox2eagle1/Desktop/repos/CarMonitor",
-    "author": "Alexander Popeil",
-    "license": "ISC",
-    "dependencies": {
-      "@sendgrid/mail": "^6.3.1",
-      "bcrypt-nodejs": "0.0.3",
-      "body-parser": "^1.15.2",
-      "express": "^4.14.0",
-      "express-session": "^1.14.2",
-      "jsonwebtoken": "^7.1.9",
-      "mongoose": "^4.6.0",
-      "mongoose-title-case": "0.0.4",
-      "mongoose-validator": "^1.2.5",
-      "morgan": "^1.7.0"
-    }
+  "name": "carmonitor",
+  "version": "1.0.0",
+  "description": "car monitoring backend service",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "MEAN",
+    "stack"
+  ],
+  "repository": "/Users/fox2eagle1/Desktop/repos/CarMonitor",
+  "author": "Alexander Popeil",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^6.3.1",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "busboy": "^0.3.0",
+    "busboy-body-parser": "^0.3.2",
+    "connect-busboy": "0.0.2",
+    "express": "^4.14.0",
+    "express-session": "^1.14.2",
+    "jsonwebtoken": "^7.1.9",
+    "mongoose": "^4.6.0",
+    "mongoose-title-case": "0.0.4",
+    "mongoose-validator": "^1.2.5",
+    "morgan": "^1.7.0",
+    "multer": "^1.4.1"
   }
+}
