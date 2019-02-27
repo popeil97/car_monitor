@@ -4,6 +4,7 @@ var busboy = require('busboy');
 var User = require('../models/User.js');
 var fs = require('fs');
 var Company = require('../models/Company.js');
+var Workflow = require('../models/Workflow.js');
 
 module.exports = function(router) {
 
@@ -86,6 +87,7 @@ module.exports = function(router) {
                         user.save(user, function(err) {
             
                             if(err) {
+                                console.log(err);
                                 res.json({error: "Failed to create account"});
                             }
 
@@ -148,15 +150,35 @@ module.exports = function(router) {
         }
     });
     
-    router.post('/uploadImage', function(req,res) {
+    router.post('/addWorkflow', function(req,res) {
 
-        fs.writeFile("./public/images/" + Date.now() +  ".jpg", Buffer(req.files.car.data,'base64'), function(err) {
+        let workflow = new Workflow();
+
+        workflow.parkingLot = req.body.parkingLot;
+        workflow.date = req.body.date;
+        workflow.location = req.body.location;
+        let date_now = Date.now();
+
+        let filePath = "./public/images/" + date_now +  ".jpg";
+        workflow.imageURL = filePath;
+
+        fs.writeFile(filePath, Buffer(req.files.car.data,'base64'), function(err) {
             if(err) {
                 console.log(err);
+                res.json({error: "Could not save Workflow"});
             }
 
             else {
-                res.send("Thanks");
+                workflow.save(workflow, function(err) {
+                    if(err) {
+                        console.log(err);
+                        res.json({error: "Could not save Workflow"});
+                    }
+
+                    else {
+                        res.json({message: "Success"});
+                    }
+                });
             }
         });
 
