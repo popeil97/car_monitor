@@ -7,7 +7,8 @@ var CompanySchema = {
     password: { type: String, required: true },
     name: { type: String, required: true },
     workers: { type: Array },
-    parkingLots: { type: Array }
+    parkingLots: { type: Array },
+    workflowQueue: { type: Array }
 };
 
 module.exports = mongoose.model('Company', CompanySchema);

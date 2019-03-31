@@ -5,6 +5,7 @@ var User = require('../models/User.js');
 var fs = require('fs');
 var Company = require('../models/Company.js');
 var Workflow = require('../models/Workflow.js');
+var emailService = require('../services/EmailService.js');
 
 module.exports = function(router) {
 
@@ -149,16 +150,61 @@ module.exports = function(router) {
 
         }
     });
+
+    router.post('/requestWorkflow', function(req,res) {
+        // find available workflow
+        // send workflow to client. Make sure to include unique ID: $oid
+
+        let company = req.body.company;
+
+        Workflow.find({company: company, state:"Open"}, function(err, workflows) {
+            if(workflows.length > 0) {
+                let workflow = workflows[0];
+                workflow.state = "IP"; // IP = In Progress
+
+                let img = fs.readFileSync(workflow.imageURL);
+
+                res.writeHead(200, {'Content-Type': 'image/gif' });
+                res.end(img, 'binary');
+
+                workflow.state = "IP";
+                let email = {
+                    from: 'Towing Cucks, towingcucks@zoho.com',
+                    to: 'alexpopeil23@gmail.com',
+                    subject: 'Workflow Requested',
+                    text: 'Hello cuck, we found an eligible car to be towed!',
+                    attachments: [{
+                        filename: 'Logo.png',
+                        path: workflow.imageURL,
+                        cid: 'car' 
+                   }],
+                    html: 'Hello cuck, we found an eligible car to be towed!<br><br><img src="cid:car">'
+                };
+                emailService.send_email(email);
+                workflow.update(workflow, function(err) {
+                    if(err) {
+                        console.log(err);
+                    }
+                });
+            }
+
+            else {
+                res.json({error: "No Available Workflows"});
+            }
+        });
+    });
     
     router.post('/addWorkflow', function(req,res) {
-
+        console.log(req);
         let workflow = new Workflow();
 
         workflow.parkingLot = req.body.parkingLot;
         workflow.date = req.body.date;
         workflow.location = req.body.location;
+        workflow.company = req.body.company;
+        workflow.state = "Open";
         let date_now = Date.now();
-
+        console.log(workflow.company);
         let filePath = "./public/images/" + date_now +  ".jpg";
         workflow.imageURL = filePath;
 
@@ -176,12 +222,26 @@ module.exports = function(router) {
                     }
 
                     else {
-                        res.json({message: "Success"});
+                        res.json({success: "Workflow Saved"});
                     }
                 });
             }
         });
 
+    });
+
+    router.post('/closeWorkflow', function(req,res) {
+        let id = req.id;
+        Workflow.findById(id, function(err, workflow) {
+            if(err) {
+                res.json({error: "could not find workflow"});
+            }
+
+            else {
+                workflow.state = "Closed";
+                res.json({success: "workflow closed"});
+            }
+        })
     });
 
     return router;

@@ -28,6 +28,8 @@
     "mongoose-title-case": "0.0.4",
     "mongoose-validator": "^1.2.5",
     "morgan": "^1.7.0",
-    "multer": "^1.4.1"
+    "multer": "^1.4.1",
+    "nodemailer": "^6.0.0",
+    "nodemailer-sendgrid-transport": "^0.2.0"
   }
 }
