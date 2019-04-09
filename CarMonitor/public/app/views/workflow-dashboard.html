@@ -1,0 +1,17 @@
+<h3>Hello from Workflow Dashboard</h3>
+
+<div class="jumbotron">
+        <div class="row">
+            <div class="col-sm-6 col-md-4" ng-repeat="workflow in openWorkflows">
+                <div class="thumbnail">
+                <img ng-src="images/{{workflow.imageURL}}" alt="..." style="width:300px;height:300px;">
+                <div class="caption">
+                    <h3>Thumbnail label</h3>
+                    <p>{{workflow.state=="IP"?"In Progress":workflow.state}}</p>
+                    <p><a href="#" ng-click="startWorkflow(workflow)" class="btn btn-primary" role="button" ng-disabled="workflow.state!='Open'"
+                        >Start Workflow</a> <a href="#" ng-disabled="workflow.state=='Closed'" ng-click="closeWorkflow(workflow)" class="btn btn-default" role="button">Close Workflow</a></p>
+                </div>
+                </div>
+            </div>
+        </div>
+</div>

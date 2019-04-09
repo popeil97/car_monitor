@@ -51,6 +51,21 @@ module.exports = function(router) {
         }
     });
 
+    router.post('/getUser', function(req, res) {
+
+        let username = req.body.username;
+        User.findOne({username:username}, function(err, user) {
+            if(err) {
+                res.json({error: "Could not find user"});
+            }
+
+            else {
+                res.json({user:user});
+            }
+        });
+
+    });
+
     router.post('/users', function(req,res) {
         var user = new User();
         user.username = req.body.username;
@@ -193,6 +208,21 @@ module.exports = function(router) {
             }
         });
     });
+
+    router.post('/workflow', function(req, res) {
+        let company = req.body.company;
+        console.log(req.body);
+        // update below so it can query in progress workflows
+        Workflow.find({company:company, state:["Open", "IP"]}, function(err, openWorkflows){
+            if(err) {
+                res.json({error: "No Open Workflows"});
+            }
+
+            else {
+                res.json({openWorkflows:openWorkflows});
+            }
+        });
+    });
     
     router.post('/addWorkflow', function(req,res) {
         console.log(req);
@@ -231,7 +261,8 @@ module.exports = function(router) {
     });
 
     router.post('/closeWorkflow', function(req,res) {
-        let id = req.id;
+        let id = req.body.id;
+        console.log(id);
         Workflow.findById(id, function(err, workflow) {
             if(err) {
                 res.json({error: "could not find workflow"});
@@ -239,9 +270,36 @@ module.exports = function(router) {
 
             else {
                 workflow.state = "Closed";
+                workflow.update(workflow, function(err) {
+                    if(err) {
+                        res.json({error: "workflow could not be close, try again later"});
+                    }
+                })
                 res.json({success: "workflow closed"});
             }
-        })
+        });
+    });
+
+    router.post('/startWorkflow', function(req, res) {
+
+        let id = req.body.id;
+
+        Workflow.findById(id, function(err, workflow) {
+            if(err) {
+                res.json({error: "could not find workflow"});
+            }
+
+            else {
+                workflow.state = "IP";
+                workflow.update(workflow, function(err) {
+                    if(err) {
+                        res.json({error: "workflow could not be started, try again later"});
+                    }
+                })
+                res.json({success: "workflow started"});
+            }
+        });
+
     });
 
     return router;

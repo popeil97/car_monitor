@@ -16,6 +16,7 @@ app.use(morgan('dev')); // Morgan Middleware
 app.use(busboy());
 app.use(bodyParser.json()); // Body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
+app.use(express.static(__dirname + '/public')); // Allow front end to access public folder
 app.use(busboyBodyParser());
 app.use('/api', appRoutes); //
 
@@ -26,6 +27,11 @@ mongoose.connect('mongodb://popeil97:Cooper97!@ds011840.mlab.com:11840/car_monit
     } else {
         console.log('Successfully connected to MongoDB'); // Log to console if able to connect to database
     }
+});
+
+// Set Application Static Layout
+app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname + '/public/app/views/index.html')); // Set index.html as layout
 });
 
 // Start Server
