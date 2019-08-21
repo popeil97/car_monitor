@@ -4,7 +4,7 @@ var sgTransport = require('nodemailer-sendgrid-transport');
 var options = {
     auth: {
         api_user: 'popeil97', // Sendgrid username
-        api_key: 'Cooper97!' // Sendgrid password
+        api_key: '***' // Sendgrid password
     }
 };
 
