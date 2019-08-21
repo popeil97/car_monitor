@@ -21,7 +21,7 @@ app.use(busboyBodyParser());
 app.use('/api', appRoutes); //
 
 
-mongoose.connect('mongodb://popeil97:Cooper97!@ds011840.mlab.com:11840/car_monitor', function(err) {
+mongoose.connect('mongodb://popeil97:***/car_monitor', function(err) {
     if (err) {
         console.log('Not connected to the database: ' + err); // Log to console if unable to connect to database
     } else {
